@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+:root {
+  --color-fondo: #fff5f7;   /* Este es el rosa suave que definiste */
+  --color-dorado: #c5a358;
+  --color-texto: #4a3f3f;
+}
+
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+  min-height: 100vh; /* Asegura que el fondo cubra todo el alto */
+  margin: 0;
+}
