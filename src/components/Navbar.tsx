@@ -43,114 +43,82 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
   return (
     <>
       <nav className="fixed top-0 w-full z-[300] bg-[#fff5f7]/95 backdrop-blur-md shadow-sm">
-        <div className="border-b border-[#c5a358]/30 px-4 md:px-6 py-5 flex justify-between items-center text-slate-900 font-mono text-[11px] font-black uppercase tracking-widest">
-          <span className="text-[13px] tracking-[0.4em] select-none">CoolDraw</span>
-          <div className="flex gap-4 md:gap-10 items-center">
-            <button onClick={() => scrollTo('top')} className="hover:text-[#c5a358] transition-colors">Inicio</button>
-            <button onClick={() => scrollTo('historia')} className="hover:text-[#c5a358] transition-colors">Sobre Mí</button>
-            <button onClick={() => setIsGaleriaOpen(true)} className="hover:text-[#c5a358] transition-colors border-b border-[#c5a358]/40">Galería</button>
-            <button onClick={() => scrollTo('contacto')} className="hover:text-[#c5a358] transition-colors">Contacto</button>
-            <button onClick={() => setOpenRedes(true)} className="bg-[#c5a358] text-white px-4 py-2 shadow-md hover:bg-slate-900 transition-all rounded-sm">[ Redes ]</button>
+        <div className="border-b border-[#c5a358]/30 px-4 md:px-6 py-4 md:py-5 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-0">
+          <span className="text-[13px] font-mono font-black uppercase tracking-[0.4em] select-none text-slate-900">CoolDraw</span>
+          
+          <div className="flex gap-5 md:gap-10 items-center overflow-x-auto w-full md:w-auto justify-center pb-2 md:pb-0 px-4 no-scrollbar">
+            <button onClick={() => scrollTo('top')} className="text-[10px] md:text-[11px] font-mono font-black uppercase tracking-widest text-slate-700 hover:text-[#c5a358] active:scale-95 transition-all flex-shrink-0">Inicio</button>
+            <button onClick={() => scrollTo('historia')} className="text-[10px] md:text-[11px] font-mono font-black uppercase tracking-widest text-slate-700 hover:text-[#c5a358] active:scale-95 transition-all flex-shrink-0">Sobre Mí</button>
+            <button onClick={() => setIsGaleriaOpen(true)} className="text-[10px] md:text-[11px] font-mono font-black uppercase tracking-widest text-slate-700 hover:text-[#c5a358] border-b border-[#c5a358]/40 active:scale-95 transition-all flex-shrink-0">Galería</button>
+            <button onClick={() => scrollTo('contacto')} className="text-[10px] md:text-[11px] font-mono font-black uppercase tracking-widest text-slate-700 hover:text-[#c5a358] active:scale-95 transition-all flex-shrink-0">Contacto</button>
+            <button onClick={() => setOpenRedes(true)} className="bg-[#c5a358] text-white px-3 py-1.5 md:px-4 md:py-2 text-[10px] md:text-[11px] font-mono font-black shadow-md hover:bg-slate-900 active:scale-90 transition-all rounded-sm flex-shrink-0">[ Redes ]</button>
           </div>
         </div>
       </nav>
 
-      {/* --- GALERÍA GRID --- */}
       <AnimatePresence>
         {isGaleriaOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#fff5f7] overflow-y-auto pt-24 pb-20">
-            <div className="max-w-7xl mx-auto p-8 columns-1 md:columns-3 gap-8 space-y-8">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#fff5f7] overflow-y-auto pt-32 pb-20">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 columns-2 md:columns-3 gap-4 md:gap-8 space-y-4 md:space-y-8">
               {misDibujos.map((obra, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, ease: "easeOut", delay: (i % 3) * 0.1 }}
-                >
+                <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
                   <img 
                     src={obra.src} 
                     onClick={() => setSelectedObra(obra)}
-                    className="w-full border-[10px] border-white shadow-lg cursor-zoom-in hover:scale-[1.02] transition-transform duration-500" 
+                    className="w-full border-4 md:border-[10px] border-white shadow-md cursor-zoom-in hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300" 
                     loading="lazy"
                   />
                 </motion.div>
               ))}
             </div>
-            <div className="text-center py-20 opacity-40 font-mono text-[10px] tracking-[0.4em]">Fin de la exhibición</div>
+            <button onClick={() => setIsGaleriaOpen(false)} className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-3 rounded-full font-mono text-[10px] uppercase tracking-widest shadow-2xl hover:bg-[#c5a358] active:scale-90 transition-all z-[120]">Cerrar Galería</button>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- VISOR DE OBRA --- */}
       <AnimatePresence>
         {selectedObra && (
-          <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 30, stiffness: 200 }} className="fixed inset-0 z-[200] bg-[#fff5f7] overflow-y-auto pt-24">
-            <button onClick={() => setSelectedObra(null)} className="fixed top-28 right-8 z-[210] bg-[#c5a358] text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center font-bold">✕</button>
-            <div className="w-full min-h-[80vh] flex items-center justify-center bg-black/5 p-4">
-              <img src={selectedObra.src} className="max-w-full max-h-[85vh] object-contain shadow-2xl border-4 border-white" />
+          <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 30, stiffness: 200 }} className="fixed inset-0 z-[200] bg-[#fff5f7] overflow-y-auto pt-20">
+            {/* BOTÓN X CERRAR VISOR */}
+            <button onClick={() => setSelectedObra(null)} className="fixed top-24 right-4 md:right-8 z-[210] bg-[#c5a358] text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center font-bold hover:bg-slate-900 hover:rotate-90 active:scale-75 transition-all duration-300">✕</button>
+            
+            <div className="w-full flex items-center justify-center bg-black/5 p-2 md:p-4 min-h-[50vh] md:min-h-[80vh]">
+              <img src={selectedObra.src} className="max-w-full h-auto md:max-h-[85vh] object-contain shadow-2xl border-4 border-white" />
             </div>
-            <div className="max-w-4xl mx-auto py-20 px-8 text-center">
-              <span className="font-mono text-[10px] text-[#c5a358] font-black uppercase tracking-[0.5em] mb-4 block">Artwork Information</span>
-              <h3 className="text-5xl md:text-6xl font-serif font-bold text-slate-950 uppercase tracking-tighter mb-8 leading-none">{selectedObra.titulo}</h3>
-              <div className="grid grid-cols-3 gap-4 py-8 border-y border-[#c5a358]/20 font-mono text-[10px] uppercase tracking-widest text-slate-600">
+
+            <div className="max-w-4xl mx-auto py-10 md:py-20 px-6 md:px-8 text-center">
+              <span className="font-mono text-[9px] text-[#c5a358] font-black uppercase tracking-[0.5em] mb-4 block">Artwork Information</span>
+              <h3 className="text-3xl md:text-6xl font-serif font-bold text-slate-950 uppercase tracking-tighter mb-6 md:mb-8 leading-none">{selectedObra.titulo}</h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 py-6 border-y border-[#c5a358]/20 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-slate-600">
                 <div><p className="text-[#c5a358]">Técnica</p><p className="font-black text-slate-950">{selectedObra.tecnica}</p></div>
                 <div><p className="text-[#c5a358]">Año</p><p className="font-black text-slate-950">{selectedObra.año}</p></div>
-                <div><p className="text-[#c5a358]">Status</p><p className="font-black text-slate-950">Original</p></div>
+                <div className="col-span-2 md:col-span-1"><p className="text-[#c5a358]">Status</p><p className="font-black text-slate-950">Original</p></div>
               </div>
-              <p className="mt-12 text-xl font-serif italic text-slate-700 leading-relaxed max-w-2xl mx-auto">"{selectedObra.desc}"</p>
-              <button className="mt-16 bg-[#c5a358] text-white px-10 py-5 font-mono text-[11px] font-black uppercase tracking-[0.2em] shadow-lg rounded-sm">Solicitar Información</button>
+              <p className="mt-8 md:mt-12 text-lg md:text-xl font-serif italic text-slate-700 leading-relaxed max-w-2xl mx-auto">"{selectedObra.desc}"</p>
+              <button className="mt-10 md:mt-16 w-full md:w-auto bg-[#c5a358] text-white px-10 py-4 md:py-5 font-mono text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-slate-900 active:scale-95 transition-all rounded-sm">Solicitar Información</button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* --- VENTANA REDES --- */}
       <AnimatePresence>
         {openRedes && (
           <div className="fixed inset-0 z-[400] flex items-center justify-center p-4">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpenRedes(false)} className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative z-[401] w-full max-w-[360px] bg-[#fff5f7] border border-[#c5a358]/40 shadow-2xl p-10 rounded-[2.5rem] text-center">
-              <button onClick={() => setOpenRedes(false)} className="absolute top-6 right-6 bg-[#c5a358] text-white w-8 h-8 rounded-full flex items-center justify-center text-xs">✕</button>
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.9 }} className="relative z-[401] w-full max-w-[360px] bg-[#fff5f7] border border-[#c5a358]/40 shadow-2xl p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] text-center">
+              {/* BOTÓN X CERRAR REDES */}
+              <button onClick={() => setOpenRedes(false)} className="absolute top-4 right-4 bg-[#c5a358] text-white w-8 h-8 rounded-full flex items-center justify-center text-xs hover:bg-slate-900 hover:rotate-90 active:scale-75 transition-all duration-300">✕</button>
               
-              <div className="flex flex-col items-center gap-6">
-                <div className="w-24 h-24 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
-                  <img 
-                    src="/Galeria/Logo.jpg" 
-                    className="w-full h-full object-cover" 
-                    style={{ 
-                        imageRendering: 'crisp-edges', 
-                        WebkitBackfaceVisibility: 'hidden',
-                        transform: 'translateZ(0) scale(1.01)' 
-                    }} 
-                  />
+              <div className="flex flex-col items-center gap-5 md:gap-6">
+                <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
+                  <img src="/Galeria/Logo.jpg" className="w-full h-full object-cover" style={{ imageRendering: 'crisp-edges', transform: 'translateZ(0) scale(1.01)' }} />
                 </div>
-
-                <h2 className="text-3xl font-serif font-bold text-slate-950 uppercase tracking-tighter">CoolDraw</h2>
-                
-                <div className="w-full space-y-3 font-mono text-[11px] font-black uppercase tracking-[0.2em]">
-                  <a href="https://www.instagram.com/cooldraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white transition-all shadow-sm rounded-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                    Instagram
-                  </a>
-
-                  <a href="https://www.tiktok.com/@cooldraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white transition-all shadow-sm rounded-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
-                    TikTok
-                  </a>
-
-                  {/* Facebook con tu link actualizado */}
-                  <a href="https://www.facebook.com/profile.php?id=61587543412431" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white transition-all shadow-sm rounded-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                    Facebook
-                  </a>
-
-                  <a href="https://x.com/CoolDraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white transition-all shadow-sm rounded-sm">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
-                    </svg>
-                    Twitter / X
-                  </a>
+                <h2 className="text-2xl md:text-3xl font-serif font-bold text-slate-950 uppercase tracking-tighter">CoolDraw</h2>
+                <div className="w-full space-y-2 md:space-y-3 font-mono text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">
+                  <a href="https://www.instagram.com/cooldraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-3 md:py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white active:scale-95 transition-all shadow-sm rounded-sm">Instagram</a>
+                  <a href="https://www.tiktok.com/@cooldraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-3 md:py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white active:scale-95 transition-all shadow-sm rounded-sm">TikTok</a>
+                  <a href="https://www.facebook.com/profile.php?id=61587543412431" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-3 md:py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white active:scale-95 transition-all shadow-sm rounded-sm">Facebook</a>
+                  <a href="https://x.com/CoolDraw02" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 w-full py-3 md:py-4 bg-white border border-[#fcd8e0] text-slate-900 hover:bg-[#c5a358] hover:text-white active:scale-95 transition-all shadow-sm rounded-sm">Twitter / X</a>
                 </div>
               </div>
             </motion.div>
