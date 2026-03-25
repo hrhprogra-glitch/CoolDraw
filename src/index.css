@@ -13,3 +13,13 @@ body {
   min-height: 100vh; /* Asegura que el fondo cubra todo el alto */
   margin: 0;
 }
+/* ====================================================
+   MEJORA DE CALIDAD Y NITIDEZ PARA LOS DIBUJOS
+==================================================== */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  /* Evita el parpadeo y la pérdida de nitidez en las animaciones */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

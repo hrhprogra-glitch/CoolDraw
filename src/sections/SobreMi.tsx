@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-export default function SobreMi() {
+export default function SobreMi({ perfilUrl = "/Galeria/Logo.jpg" }: any) {
   // Lógica para el efecto Lupa
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -62,9 +62,9 @@ export default function SobreMi() {
             onMouseLeave={() => setIsHovering(false)}
           >
             <motion.img 
-              src="/Galeria/Logo.jpg" 
+              src={perfilUrl}
               alt="CoolDraw Artist"
-              className="w-full h-full object-cover transition-transform duration-200 ease-out"
+              className="w-full h-full object-cover transition-transform duration-200 ease-out will-change-transform"
               style={{
                 transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
                 transform: isHovering ? 'scale(2.5)' : 'scale(1)'

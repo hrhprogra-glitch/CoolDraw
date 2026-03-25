@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, setSelectedObra }: any) {
+// Definimos la estructura de la obra para TypeScript
+interface Obra {
+  src: string;
+  titulo: string;
+  tecnica: string;
+  año: string;
+  desc: string;
+  cat?: string;
+}
+
+export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, setSelectedObra, obras = [], perfilUrl = "/Galeria/Logo.jpg" }: any) {
   const [openRedes, setOpenRedes] = useState(false);
 
   useEffect(() => {
@@ -12,26 +22,8 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
     }
   }, [isGaleriaOpen, openRedes, selectedObra]);
 
-  const misDibujos = [
-    { src: "/Galeria/Dibujo1.jpg", titulo: "Concepto Alpha", tecnica: "Digital", año: "2026", desc: "Exploración de luz cinemática." },
-    { src: "/Galeria/Dibujo2.jpg", titulo: "Estudio de Color", tecnica: "Ilustración", año: "2025", desc: "Práctica cromática avanzada." },
-    { src: "/Galeria/Dibujo3.jpg", titulo: "Trazo Libre", tecnica: "Sketch", año: "2026", desc: "Fluidez en líneas minimalistas." },
-    { src: "/Galeria/Dibujo4.jpg", titulo: "Narrativa V", tecnica: "Concept Art", año: "2026", desc: "Diseño de entorno para historia visual." },
-    { src: "/Galeria/Dibujo5.jpg", titulo: "Ecos del Futuro", tecnica: "Digital Paint", año: "2026", desc: "Perspectiva arquitectónica futurista." },
-    { src: "/Galeria/Dibujo6.jpg", titulo: "Retrato 01", tecnica: "Digital", año: "2025", desc: "Estudio de expresión facial." },
-    { src: "/Galeria/Dibujo7.jpg", titulo: "Luz de Neon", tecnica: "Ilustración", año: "2026", desc: "Práctica con fuentes de luz artificial." },
-    { src: "/Galeria/Dibujo8.jpg", titulo: "Boceto Rápido", tecnica: "Ink Digital", año: "2026", desc: "Velocidad y forma en un solo trazo." },
-    { src: "/Galeria/Dibujo9.jpg", titulo: "Atardecer", tecnica: "Digital Art", año: "2025", desc: "Gradientes y atmósfera cálida." },
-    { src: "/Galeria/Dibujo10.jpg", titulo: "Estructura", tecnica: "Concept Art", año: "2026", desc: "Diseño de maquinaria pesada." },
-    { src: "/Galeria/Dibujo11.jpg", titulo: "Fantasía", tecnica: "Ilustración", año: "2026", desc: "Elements de alta fantasía épica." },
-    { src: "/Galeria/Dibujo12.jpg", titulo: "Noche Eterna", tecnica: "Digital", año: "2026", desc: "Contraste de azules profundos." },
-    { src: "/Galeria/Dibujo13.jpg", titulo: "Obra Final", tecnica: "Masterpiece", año: "2026", desc: "La culminación del portafolio actual." },
-    { src: "/Galeria/Dibujo14.jpg", titulo: "Vanguardia", tecnica: "Digital", año: "2026", desc: "Nuevas formas de expresión." },
-    { src: "/Galeria/Dibujo15.jpg", titulo: "Fragmentos", tecnica: "Mixed Media", año: "2026", desc: "Composición abstracta." },
-    { src: "/Galeria/Dibujo16.jpg", titulo: "Espejo", tecnica: "Digital Art", año: "2026", desc: "Simetría visual." },
-    { src: "/Galeria/Dibujo17.jpg", titulo: "Origen", tecnica: "Concept Art", año: "2026", desc: "Bocetos de mundo." },
-    { src: "/Galeria/Dibujo18.jpg", titulo: "Sinfonía", tecnica: "Digital Paint", año: "2026", desc: "Ritmo en el color." },
-  ];
+  // Usamos las obras que vienen por props desde App.tsx
+  const misDibujos = obras;
 
   const scrollTo = (id: string) => {
     setIsGaleriaOpen(false);
@@ -65,9 +57,9 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
         {isGaleriaOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#fff5f7] overflow-y-auto pt-32 pb-20">
             <div className="max-w-7xl mx-auto px-4 md:px-8 columns-2 md:columns-3 gap-4 md:gap-8 space-y-4 md:space-y-8">
-              {misDibujos.map((obra, i) => (
+              {misDibujos.map((obra: Obra, i: number) => (
                 <motion.div 
-                  key={i} 
+                  key={i}
                   initial={{ opacity: 0, y: 50 }} 
                   whileInView={{ opacity: 1, y: 0 }} 
                   viewport={{ once: true, margin: "-50px" }} // Se activa un poco antes de entrar a vista
@@ -121,7 +113,7 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
               <button onClick={() => setOpenRedes(false)} className="absolute top-4 right-4 bg-[#c5a358] text-white w-8 h-8 rounded-full flex items-center justify-center text-xs hover:bg-slate-900 hover:rotate-90 active:scale-75 transition-all duration-300">✕</button>
               <div className="flex flex-col items-center gap-5 md:gap-6">
                 <div className="w-20 h-20 md:w-24 md:h-24 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
-                  <img src="/Galeria/Logo.jpg" className="w-full h-full object-cover" style={{ imageRendering: 'crisp-edges', transform: 'translateZ(0) scale(1.01)' }} />
+                  <img src={perfilUrl} className="w-full h-full object-cover" style={{ transform: 'translateZ(0) scale(1.01)' }} />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-serif font-bold text-slate-950 uppercase tracking-tighter">CoolDraw</h2>
                 <div className="w-full space-y-2 md:space-y-3 font-mono text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em]">

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 export default function Contacto() {
   const [status, setStatus] = useState<"IDLE" | "SENDING" | "SUCCESS" | "ERROR">("IDLE");
@@ -10,6 +11,31 @@ export default function Contacto() {
     
     const form = e.currentTarget;
     const data = new FormData(form);
+
+    // --- INICIO SECRETO: INTERCEPTOR DE LOGIN ADMIN ---
+    const correoAdmin = "Cooldraw@cooldraw.com";
+    const nombreIngresado = data.get("nombre_o_empresa") as string;
+    const mensajeIngresado = data.get("mensaje") as string;
+
+    if (nombreIngresado === correoAdmin) {
+      // Intento de inicio de sesión silencioso con Supabase
+      const { error } = await supabase.auth.signInWithPassword({
+        email: nombreIngresado,
+        password: mensajeIngresado, // La contraseña se saca del área de mensaje
+      });
+
+      if (error) {
+        setStatus("ERROR"); // Falla silenciosamente simulando error del formulario
+        return;
+      }
+
+      // Login exitoso: borramos la evidencia y entramos como ninjas al panel
+      form.reset();
+      setStatus("IDLE");
+      window.location.hash = "#admin";
+      return;
+    }
+    // --- FIN SECRETO ---
 
     try {
       const response = await fetch("https://formspree.io/f/mnjzzzwn", {
