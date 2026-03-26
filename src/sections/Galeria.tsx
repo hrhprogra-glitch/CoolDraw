@@ -12,7 +12,7 @@ export default function Galeria({ onSelectObra, obras = [] }: any) {
           className="flex"
           /* DIRECCIÓN: -50% mueve exactamente un "Bloque" entero hacia la izquierda. */
           animate={{ x: ["0%", "-50%"] }}
-          transition={{ ease: "linear", duration: 25, repeat: Infinity }}
+          transition={{ ease: "linear", duration: 240, repeat: Infinity }}
         >
           {/* ========================================================
               BLOQUE 1: TUS OBRAS ORIGINALES

@@ -121,6 +121,25 @@ export default function Admin() {
     if(form) form.reset();
   };
 
+  // FUNCIÓN BULK PARA ELIMINAR CATEGORÍA (Mueve dibujos a "Sin Categoría")
+  const handleEliminarCategoria = async (categoriaTarget: string) => {
+    if(!window.confirm(`¿Estás seguro de borrar la categoría "${categoriaTarget}"? Todos los dibujos en esta categoría pasarán a "Sin Categoría".`)) return;
+    
+    try {
+      setUploading(true);
+      // Actualiza masivamente todas las obras que tengan esta categoría
+      const { error } = await supabase.from('obras').update({ categoria: 'Sin Categoría' }).eq('categoria', categoriaTarget);
+      if (error) throw error;
+      
+      alert(`Categoría "${categoriaTarget}" eliminada con éxito.`);
+      cargarObras(); // Refresca la lista de obras y categorías
+    } catch (error: any) {
+      alert("Error al eliminar categoría: " + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   // FUNCIÓN PARA ELIMINAR OBRA TOTALMENTE
   const handleEliminarObra = async (id: number, url_imagen: string) => {
     if(!window.confirm("¿Estás seguro de que deseas eliminar esta obra permanentemente?")) return;
@@ -223,9 +242,25 @@ export default function Admin() {
                 <label className="text-[#c5a358] font-bold">Título *</label>
                 <input required name="titulo" type="text" className="p-3 border border-[#c5a358]/40 normal-case" />
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 relative">
                 <label className="text-[#c5a358] font-bold">Categoría *</label>
-                <input required name="categoria" type="text" className="p-3 border border-[#c5a358]/40 normal-case" />
+                <input 
+                  required 
+                  name="categoria" 
+                  list="lista-categorias" 
+                  placeholder="Selecciona o escribe una nueva..." 
+                  autoComplete="off"
+                  className="p-3 border border-[#c5a358]/40 normal-case outline-none focus:border-[#c5a358] bg-white cursor-text" 
+                />
+                <datalist id="lista-categorias">
+                  {/* Extrae las categorías únicas directamente de la DB sin repetir */}
+                  {Array.from(new Set(obrasList.map(o => o.categoria))).filter(Boolean).map(cat => (
+                    <option key={cat as string} value={cat as string} />
+                  ))}
+                </datalist>
+                <span className="text-[9px] text-slate-400 font-mono tracking-widest leading-tight mt-1">
+                  * TIP: Despliega para elegir o escribe para crear. Las categorías sin obras se borran solas.
+                </span>
               </div>
             </div>
 
@@ -273,6 +308,32 @@ export default function Admin() {
             <input required name="imagen" type="file" accept="image/*" className="text-[10px]" />
             <button type="submit" disabled={uploading} className="bg-slate-200 text-slate-800 px-4 py-2 uppercase font-black text-[10px] hover:bg-[#c5a358] hover:text-white transition-all disabled:opacity-50">Actualizar Perfil</button>
           </form>
+
+          {/* GESTOR DE CATEGORÍAS */}
+          <div className="mt-8 border-t border-[#c5a358]/20 pt-8">
+            <h2 className="text-xl font-serif text-slate-900 mb-4 border-b border-[#c5a358]/20 pb-2">Gestor de Categorías</h2>
+            <div className="flex flex-col gap-2 max-h-[250px] overflow-y-auto scrollbar-gold pr-3 pb-2">
+              {Array.from(new Set(obrasList.map(o => o.categoria))).filter(c => c && c !== 'Sin Categoría').map((cat) => (
+                <div key={cat as string} className="flex justify-between items-center bg-white p-3 border border-[#c5a358]/30 shadow-sm">
+                  <span className="font-mono text-[11px] font-black text-slate-800 uppercase tracking-widest truncate mr-2">{cat as string}</span>
+                  <button 
+                    onClick={() => handleEliminarCategoria(cat as string)} 
+                    disabled={uploading}
+                    className="text-[9px] uppercase font-black text-red-500 hover:text-white hover:bg-red-500 border border-red-500 px-3 py-1 transition-all rounded-sm disabled:opacity-50"
+                  >
+                    Borrar
+                  </button>
+                </div>
+              ))}
+              {Array.from(new Set(obrasList.map(o => o.categoria))).filter(c => c && c !== 'Sin Categoría').length === 0 && (
+                <p className="text-[10px] text-slate-500 font-mono text-center py-4">No hay categorías creadas aún.</p>
+              )}
+            </div>
+            <p className="text-[9px] text-slate-400 font-mono mt-3 leading-tight">
+              * TIP: Para crear una nueva, escríbela al publicar o editar una obra.
+            </p>
+          </div>
+
         </div>
 
         {/* =========================================

@@ -46,7 +46,7 @@ export default function App() {
           tecnica: item.tecnica,
           año: item.año,
           desc: item.descripcion,
-          cat: item.categoria || 'Digital',
+          cat: item.categoria || 'Sin Categoría',
           destino: item.destino || 'Ambos'
         }));
         

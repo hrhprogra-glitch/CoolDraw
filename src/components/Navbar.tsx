@@ -24,6 +24,13 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
 
   // Usamos las obras que vienen por props desde App.tsx
   const misDibujos = obras;
+  const [filtroCategoria, setFiltroCategoria] = useState<string>('Todas');
+
+  // Generador dinámico de categorías únicas
+  const categoriasUnicas = ['Todas', ...Array.from(new Set(misDibujos.map((o: Obra) => o.cat || 'Sin Categoría')))];
+  
+  // Filtrado de la matriz en tiempo real
+  const obrasFiltradas = filtroCategoria === 'Todas' ? misDibujos : misDibujos.filter((o: Obra) => (o.cat || 'Sin Categoría') === filtroCategoria);
 
   const scrollTo = (id: string) => {
     setIsGaleriaOpen(false);
@@ -56,8 +63,30 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
       <AnimatePresence>
         {isGaleriaOpen && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-[#fff5f7] overflow-y-auto pt-32 pb-20">
+            
+            {/* FILTROS DE CATEGORÍA OPTIMIZADOS (NUBE CENTRADA CON WRAP) */}
+            <div className="max-w-6xl mx-auto px-4 md:px-8 mb-12 border-b border-[#c5a358]/10 pb-8">
+              <div className="flex flex-wrap gap-2.5 items-center justify-center">
+                <span className="font-serif text-[13px] text-slate-500 mr-2 hidden md:block italic">Filtrar:</span>
+                {categoriasUnicas.map((cat: any) => (
+                  <button
+                    key={cat}
+                    onClick={() => setFiltroCategoria(cat)}
+                    className={`px-5 py-2.5 rounded-full font-mono text-[10px] uppercase tracking-widest transition-all border ${
+                      filtroCategoria === cat 
+                      ? 'bg-[#c5a358] text-white border-[#c5a358] shadow-lg scale-105' 
+                      : 'bg-white text-slate-600 border-[#c5a358]/20 hover:bg-[#c5a358]/5 hover:border-[#c5a358]/50'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="max-w-7xl mx-auto px-4 md:px-8 columns-2 md:columns-3 gap-4 md:gap-8 space-y-4 md:space-y-8">
-              {misDibujos.map((obra: Obra, i: number) => (
+              {/* Usamos obrasFiltradas en lugar de misDibujos */}
+              {obrasFiltradas.map((obra: Obra, i: number) => (
                 <motion.div 
                   key={i}
                   initial={{ opacity: 0, y: 50 }} 

@@ -23,3 +23,21 @@ img {
   transform: translateZ(0);
   backface-visibility: hidden;
 }
+
+/* ====================================================
+   CUSTOM SCROLLBAR ELEGANTE (ESTÉTICA COOLDRAW)
+==================================================== */
+.scrollbar-gold::-webkit-scrollbar {
+  width: 5px; /* Scrollbar ultra delgado */
+}
+.scrollbar-gold::-webkit-scrollbar-track {
+  background: rgba(197, 163, 88, 0.05); /* Fondo casi invisible */
+  border-radius: 10px;
+}
+.scrollbar-gold::-webkit-scrollbar-thumb {
+  background: rgba(197, 163, 88, 0.3); /* Dorado sutil */
+  border-radius: 10px;
+}
+.scrollbar-gold::-webkit-scrollbar-thumb:hover {
+  background: rgba(197, 163, 88, 0.8); /* Dorado fuerte al pasar el mouse */
+}
