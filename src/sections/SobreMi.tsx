@@ -28,7 +28,7 @@ export default function SobreMi({ perfilUrl = "/Galeria/Logo.jpg" }: any) {
           >
             <span className="text-[#c5a358] block mb-4 font-bold">01 / Profile</span>
             <h2 className="text-4xl font-serif text-slate-900 leading-tight normal-case tracking-normal">
-              CoolDraw es la firma creativa de una artista enfocada en la <span className="text-[#c5a358] italic">estética contemporánea</span> y el color.
+              Soy una artista proveniente de Perú enfocada en el <span className="text-[#c5a358] italic">arte del semirealismo</span> con técnicas en digital y en tradicional.
             </h2>
           </motion.div>
           

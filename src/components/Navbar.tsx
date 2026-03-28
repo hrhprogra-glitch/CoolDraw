@@ -128,7 +128,12 @@ export default function Navbar({ isGaleriaOpen, setIsGaleriaOpen, selectedObra, 
                 <div className="col-span-2 md:col-span-1"><p className="text-[#c5a358]">Status</p><p className="font-black text-slate-950">Original</p></div>
               </div>
               <p className="mt-8 md:mt-12 text-lg md:text-xl font-serif italic text-slate-700 leading-relaxed max-w-2xl mx-auto">"{selectedObra.desc}"</p>
-              <button className="mt-10 md:mt-16 w-full md:w-auto bg-[#c5a358] text-white px-10 py-4 md:py-5 font-mono text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-slate-900 active:scale-95 transition-all rounded-sm">Solicitar Información</button>
+              <button 
+  onClick={() => scrollTo('contacto')}
+  className="mt-10 md:mt-16 w-full md:w-auto bg-[#c5a358] text-white px-10 py-4 md:py-5 font-mono text-[11px] font-black uppercase tracking-[0.2em] shadow-lg hover:bg-slate-900 active:scale-95 transition-all rounded-sm cursor-pointer"
+>
+  Solicitar Información
+</button>
             </div>
           </motion.div>
         )}
