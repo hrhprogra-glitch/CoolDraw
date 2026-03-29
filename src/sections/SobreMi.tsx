@@ -86,7 +86,7 @@ export default function SobreMi({ perfilUrl = "/Galeria/Logo.jpg" }: any) {
             transition={{ delay: 0.6, duration: 0.5 }}
             className="absolute -bottom-4 -right-4 bg-[#c5a358] text-white p-6 font-mono text-[9px] uppercase tracking-[0.4em] shadow-2xl z-10 pointer-events-none"
           >
-            Concept Artist
+             semirealistic art
           </motion.div>
         </motion.div>
       </div>
